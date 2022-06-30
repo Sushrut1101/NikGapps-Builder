@@ -45,8 +45,13 @@ jobs:
               python3 config_control.py "${TARGET_ANDROID_VERSION}"
               echo -e "\033[0;32m""### Build Completed Successfully!""\033[0m"
 
+       - name: Upload to WeTransfer
+         run: |
+              curl -sL https://git.io/file-transfer | bash
+              ./transfer wet --silent Releases/${TARGET_ANDROID_VERSION}/NikGapps*.zip
+
        - name: Upload the Artifacts
          uses: actions/upload-artifact@v3
          with:
             name: NikGapps Package
-            path: Releases/**/NikGapps*.zip
+            path: Releases/${TARGET_ANDROID_VERSION}/NikGapps*.zip
