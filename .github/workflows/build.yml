@@ -31,18 +31,19 @@ jobs:
          run: |
               sudo apt update -y
               sudo apt install aapt -y
-              pip3 install -r requirements.txt
+              sudo python3 -m pip install wheel setuptools testresources
+              sudo pip3 install -r requirements.txt
 
        - name: Setup Configs according to the Target Android Version
          run: |
-              cp -pf nikgapps.config config/${TARGET_ANDROID_VERSION}/nikgapps.config
+              cp nikgapps.config config/${TARGET_ANDROID_VERSION}/custom.config
               sed -i 's|TARGET_ANDROID_VERSION|#TARGET_ANDROID_VERSION|g' build/Config.py
               printf "\nTARGET_ANDROID_VERSION = %s\n" "${TARGET_ANDROID_VERSION}" >> build/Config.py
 
        - name: Build the Package
          working-directory: build
          run: |
-              python3 config_control.py "${TARGET_ANDROID_VERSION}"
+              python3 config_control.py ${TARGET_ANDROID_VERSION}
               echo -e "\033[0;32m""### Build Completed Successfully!""\033[0m"
 
        - name: Upload to WeTransfer
