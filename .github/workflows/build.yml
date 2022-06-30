@@ -1,0 +1,50 @@
+name: Build NikGapps Package
+
+on:
+  workflow_dispatch:
+    inputs:
+      ANDROID_VERSION:
+        description: "Target Android Version (eg: 10, 11, 12.1 etc.)"
+        required: true
+
+env:
+  TARGET_ANDROID_VERSION: ${{ github.event.inputs.ANDROID_VERSION }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+       - name: Checkouts
+         uses: actions/checkout@v2
+
+       - name: Clone the Build Repo
+         run: |
+              git clone --depth=1 https://github.com/nikgapps/build.git
+
+       - name: Clone the Config Repo
+         run: |
+              git clone --depth=1 https://github.com/nikgapps/config.git
+
+       - name: Install Required Packages
+         working-directory: build
+         run: |
+              pip3 install -r requirements.txt
+
+       - name: Setup Configs according to the Target Android Version
+         run: |
+              cp -pf nikgapps.config config/${TARGET_ANDROID_VERSION}/nikgapps.config
+              sed -i 's|TARGET_ANDROID_VERSION|#TARGET_ANDROID_VERSION|g' build/Config.py
+              printf "\nTARGET_ANDROID_VERSION = %s\n" "${TARGET_ANDROID_VERSION}" >> build/Config.py
+
+       - name: Build the Package
+         working-directory: build
+         run: |
+              python3 config_control.py "${TARGET_ANDROID_VERSION}"
+              echo -e "\033[0;32m""### Build Completed Successfully!""\033[0m"
+
+       - name: Upload the Artifacts
+         uses: actions/upload-artifact@v3
+         with:
+            name: NikGapps Package
+            path: Releases/**/NikGapps*.zip
