@@ -29,6 +29,8 @@ jobs:
        - name: Install Required Packages
          working-directory: build
          run: |
+              sudo apt update -y
+              sudo apt install aapt -y
               pip3 install -r requirements.txt
 
        - name: Setup Configs according to the Target Android Version
