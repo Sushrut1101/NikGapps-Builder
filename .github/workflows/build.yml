@@ -56,4 +56,4 @@ jobs:
          uses: actions/upload-artifact@v3
          with:
             name: NikGapps Package
-            path: Releases/${TARGET_ANDROID_VERSION}/NikGapps*.zip
+            path: Releases/${{ env.TARGET_ANDROID_VERSION }}/NikGapps*.zip
