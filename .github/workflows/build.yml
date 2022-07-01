@@ -9,6 +9,7 @@ on:
 
 env:
   TARGET_ANDROID_VERSION: ${{ github.event.inputs.ANDROID_VERSION }}
+  CONFIG: custom.config  # Use custom.config to build the Package
 
 jobs:
   build:
@@ -36,7 +37,7 @@ jobs:
 
        - name: Setup Configs according to the Target Android Version
          run: |
-              cp nikgapps.config config/${TARGET_ANDROID_VERSION}/custom.config
+              cp ${CONFIG} config/${TARGET_ANDROID_VERSION}/custom.config
               sed -i 's|TARGET_ANDROID_VERSION|#TARGET_ANDROID_VERSION|g' build/Config.py
               printf "\nTARGET_ANDROID_VERSION = %s\n" "${TARGET_ANDROID_VERSION}" >> build/Config.py
 
