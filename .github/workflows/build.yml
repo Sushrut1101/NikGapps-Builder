@@ -51,3 +51,7 @@ jobs:
          run: |
               curl -sL https://git.io/file-transfer | bash
               ./transfer wet --silent Releases/${TARGET_ANDROID_VERSION}/NikGapps*.zip
+
+       - name: Mirror to oshi.at
+         run: |
+              curl https://ohsi.at -F f=Releases/${TARGET_ANDROID_VERSION}/NikGapps*.zip -F shorturl=0 -F expire=43200
