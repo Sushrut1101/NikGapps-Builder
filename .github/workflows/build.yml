@@ -53,5 +53,6 @@ jobs:
               ./transfer wet --silent Releases/${TARGET_ANDROID_VERSION}/NikGapps*.zip
 
        - name: Mirror to oshi.at
+         working-directory: Releases/${{ env.TARGET_ANDROID_VERSION }}
          run: |
-              curl https://ohsi.at -F f=Releases/${TARGET_ANDROID_VERSION}/NikGapps*.zip -F shorturl=0 -F expire=43200
+              curl https://oshi.at -F f=@$("ls" NikGapps*.zip) -F shorturl=0 -F expire=43200 2>&1 | grep DL
