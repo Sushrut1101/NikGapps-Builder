@@ -51,9 +51,3 @@ jobs:
          run: |
               curl -sL https://git.io/file-transfer | bash
               ./transfer wet --silent Releases/${TARGET_ANDROID_VERSION}/NikGapps*.zip
-
-       - name: Upload the Artifacts
-         uses: actions/upload-artifact@v3
-         with:
-            name: NikGapps Package
-            path: Releases/${{ env.TARGET_ANDROID_VERSION }}/NikGapps*.zip
